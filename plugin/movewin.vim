@@ -8,6 +8,10 @@
 "              j/J move down
 "
 " All other keys = done
+"
+" 08/22/03 - initial version
+" 04/05/04 - redraw title when lazyredraw is not set
+
 
 
 function! MoveWin()
@@ -24,6 +28,9 @@ function! MoveWin()
    else
       while stridx('hjklHJKL', s:k) >= 0
          let &titlestring = 'Moving window: (' . s:x . ', ' . s:y . ')'
+         if ! &lazyredraw
+            redraw
+         endif
 
          let s:k = nr2char(getchar())
          if s:k ==? 'h'
@@ -50,10 +57,8 @@ function! MoveWin()
                let s:x = s:x + s:d2
             endif
          endif
-
          exec ':winpos ' . s:x . ' ' . s:y
-         let s:x = getwinposx()
-         let s:y = getwinposy()
+
       endwhile
    endif
 
